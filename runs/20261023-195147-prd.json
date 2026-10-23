@@ -1,0 +1,634 @@
+{
+  "bundle_schema_version": 3,
+  "bundle_kind": "slim",
+  "run_id": "20261023-195147-prd",
+  "run_at": "2026-10-23T19:52:45.775343+00:00",
+  "run_kind": "evaluation",
+  "suite_id": "",
+  "tahi_env": "PRD",
+  "caitlyn_base_url": "https://tahi.nz",
+  "caitlyn_agent_alias_id": "TSTALIASID",
+  "caitlyn_agent_mode": "prd-test-agent",
+  "rubric_version": "Tahi_Test_Suite-2",
+  "source_file": "Tahi Test Suite (2).xlsx",
+  "case_count": 1,
+  "failed_count": 0,
+  "total_duration_seconds": 57.66,
+  "cases": [
+    {
+      "bundle_schema_version": 3,
+      "bundle_kind": "slim",
+      "run_id": "20261023-195147-prd",
+      "test_id": "R01",
+      "ok": true,
+      "prompt": "What happened with the investigation following the Christchurch mosque attacks?",
+      "error": null,
+      "started_at": "2026-10-23T19:51:48.113260+00:00",
+      "finished_at": "2026-10-23T19:52:45.773938+00:00",
+      "duration_seconds": 57.66,
+      "repeat_index": null,
+      "warmup": false,
+      "response": {
+        "response_text": "The investigation and inquiry process following the 15 March 2019 Christchurch mosque attacks — in which 51 worshippers were murdered at Al Noor Mosque and Linwood Islamic Centre — has been extensive, multi-layered, and at times deeply contentious. It has involved a Royal Commission of Inquiry, a coronial inquest in two phases, and ongoing legal proceedings against the perpetrator.\n\n## The Royal Commission of Inquiry\n\nA Royal Commission of Inquiry was established in the wake of the attacks and released its report in December 2020. [[1]](cite://1/1) The commission undertook 18 months of intense inquiry, examining evidence including community submissions, Cabinet papers, ministerial briefings, police statements, financial records, social media reports, and phone records. [[2]](cite://2/1) It made 44 recommendations covering areas such as firearms licensing, intelligence agency reform, hate speech laws, and community safety. [[1]](cite://1/2)\n\nThe then-Labour government promised to implement all 44 recommendations. [[1]](cite://1/3) However, in August 2024, the coalition government under Prime Minister Christopher Luxon announced it would not progress the final eight of those recommendations, saying the coordinated government response \"has concluded\" after five years. [[1]](cite://1/4) Of the 44 recommendations, 36 had been implemented or integrated into ongoing work programmes. [[1]](cite://1/5)\n\nThe eight recommendations that were dropped included strengthening hate speech laws, establishing a national intelligence and security agency, requiring health professionals to report firearms injuries to police, and creating a counter-terrorism advisory group. [[3]](cite://3/1) Muslim community leaders reacted with outrage. Federation of Islamic Associations spokesperson Abdur Razzaq Khan called the decision \"shameful,\" noting that the terrorist had accidentally shot himself before the attack and attended Dunedin Hospital — a fact that, if reported to police, could have flagged concerns about his firearms ownership. [[3]](cite://3/2)\n\nChanges that *were* implemented as a result of the Royal Commission included the creation of New Zealand's first National Security Strategy, the establishment of the Firearms Safety Authority and the Ministry for Ethnic Communities, and a public awareness campaign for identifying signs of violent extremism. [[1]](cite://1/6)\n\n## The Coronial Inquest\n\nSeparate from the Royal Commission, Deputy Chief Coroner Brigitte Windley presided over what has been described as the largest and most complex inquest in New Zealand's history. [[4]](cite://4/1)\n\n**Phase One** examined 10 issues relating to the events of 15 March 2019 itself — including police and ambulance response times, medical triage, emergency service coordination, and whether deaths could have been prevented. It also investigated why an emergency exit door at Al Noor Mosque failed to open during the shooting. [[5]](cite://5/1) This phase concluded in late 2023.\n\n**Phase Two** began in October 2024 and focused on how the terrorist obtained his firearms licence. [[6]](cite://6/1) The inquest heard that the police firearms licensing regime at the time was understaffed, underfunded, and overworked. [[7]](cite://7/1) A critical loophole allowed people — including the terrorist — to obtain a standard firearms licence and purchase centrefire semi-automatic rifles that could be fitted with high-capacity magazines, which were entirely unregulated. [[7]](cite://7/2) Police had made multiple attempts to warn successive governments about this loophole, but political will was lacking until 51 lives were lost. [[7]](cite://7/3)\n\nThe inquest also heard that the terrorist, Brenton Tarrant, submitted his firearms licence application just 15 days after arriving in New Zealand in August 2017, and that his referees — a gaming friend aware of his extremist views, and that friend's father — described him as a \"good, outstanding young man.\" [[6]](cite://6/2) Windley adjourned the second phase with evidence only partially heard, and said she would also write her findings for the first phase. [[7]](cite://7/4)\n\n## The Perpetrator's Legal Proceedings\n\nTarrant pleaded guilty to 51 counts of murder, 40 counts of attempted murder, and one terrorism charge in March 2020, and was sentenced to life imprisonment without parole in August 2020. [[8]](cite://8/1) In February 2026, a Court of Appeal hearing began to determine whether he could vacate those guilty pleas and stand trial. [[9]](cite://9/1) Tarrant claimed his guilty plea was made under duress due to harsh prison conditions and poor mental health, but a forensic psychologist challenged those claims, and his former lawyers testified he had consistently indicated his intention to plead guilty. [[10]](cite://10/1)[[11]](cite://11/1)\n\n## Ongoing Concerns\n\nSix years on, many in the Muslim community remain fearful. Some members believe a similar attack would not be foiled today, citing gaps in intelligence oversight and the scrapping of key recommendations. [[12]](cite://12/1) New Zealand's Security Intelligence Service (SIS) has undergone significant changes since 2019, but a new book by academics Chris Wilson and Michal Dziwulski argues that warning signs were missed and that the Royal Commission failed to adequately examine the terrorist's extensive online activity. [[13]](cite://13/1) Police data cited in mid-2026 showed one hate crime against a Muslim occurring every 54 hours in New Zealand. [[14]](cite://14/1)\n\nRNZ's most recent coverage used in Tahi is from 24/07/2026. The situation regarding the Court of Appeal proceedings and the coronial inquest findings may have developed further since then.\n\n## Sources\n\n[1] [Government Won't Progress Final 8 Recommendations of Christchurch Terror Attack Commission](https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission)\n[2] [New Book Claims Missed Opportunities to Detect Christchurch Terrorist Ahead of March 15 Attacks](https://www.rnz.co.nz/news/crime-and-justice/597535/new-book-claims-there-were-opportunities-to-detect-terrorist-ahead-of-march-15-attacks)\n[3] [Government's Binning of Christchurch Terror Attack Recommendations Called 'Shameful' by Muslim Leaders](https://www.rnz.co.nz/news/national/523996/christchurch-terror-attacks-government-s-binning-of-recommendations-shameful-muslim-leader-says)\n[4] [Mosque Attack Inquest: Terrorist's Radicalisation and Firearm Licensing Among Next Phase](https://www.rnz.co.nz/news/national/506311/mosque-attack-inquest-terrorist-s-radicalisation-and-firearm-licensing-among-next-phase)\n[5] [Christchurch Terror Attacks: Coroner Continues Probe of Locked Door](https://www.rnz.co.nz/news/national/524131/christchurch-terror-attacks-coroner-continues-probe-of-locked-door)\n[6] [Christchurch Terror Attack: Second Phase of Inquest Begins](https://www.rnz.co.nz/news/national/530088/christchurch-terror-attack-second-phase-of-inquest-begins-today)\n[7] [Mosque Attack Inquest Provides Long Overdue Answers](https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers)\n[8] [Court to Consider Christchurch Terrorist's Appeal Application](https://www.rnz.co.nz/news/national/586264/court-to-consider-christchurch-terrorist-s-appeal-application)\n[9] [Christchurch Mosque Shooter Seeking to Appeal Convictions](https://www.rnz.co.nz/national/programmes/morningreport/audio/2019022223/christchurch-mosque-shooter-seeking-to-appeal-convictions)\n[10] [Christchurch Terrorist Exaggerating Prison Distress, Psychologist Tells Court](https://www.rnz.co.nz/news/national/586535/christchurch-terrorist-exaggerating-prison-distress-psychologist-tells-court)\n[11] [Christchurch Mosque Shooter 'Wanted to Be Called a Terrorist', Ex-Lawyer Says](https://www.rnz.co.nz/news/national/586356/christchurch-mosque-shooter-wanted-to-be-called-a-terrorist-ex-lawyer-says)\n[12] [Christchurch Mosque Shootings: Community Fears Ongoing Threat of Another Attack](https://www.rnz.co.nz/news/national/544627/christchurch-mosque-shootings-community-fears-ongoing-threat-of-another-attack)\n[13] [SIS Undergoes Significant Transformation Since 2019 Christchurch Mosque Attacks](https://www.rnz.co.nz/news/crime-and-justice/597650/sis-has-undergone-drastic-changes-since-mosque-attack-but-isn-t-all-seeing)\n[14] ['Oozing pain': Plea for politicians to tackle hate speech](https://www.rnz.co.nz/news/political/781240/oozing-pain-plea-for-politicians-to-tackle-hate-speech)",
+        "mock": false,
+        "submitted_at": "2026-10-23T19:52:45.773914+00:00",
+        "workflow_timing": {
+          "total_ms": 57660,
+          "classification": {
+            "ms": 3811,
+            "category": "D",
+            "category_label": "Answerable queries"
+          },
+          "summarise": {
+            "ms": null,
+            "skipped": true
+          },
+          "search": {
+            "ms": 18536,
+            "queries": [
+              "Search for mosque attacks investigation",
+              "Search for Royal Commission inquiry",
+              "Search for gunman prosecution outcome",
+              "Search for Christchurch mosque attacks history"
+            ],
+            "includes_pre_search_prep": true,
+            "queries_by_kb": [
+              {
+                "knowledge_base_id": "QETGXQCZ48",
+                "query": "investigation into the Christchurch mosque attacks findings",
+                "label": "Search for mosque attacks investigation"
+              },
+              {
+                "knowledge_base_id": "QETGXQCZ48",
+                "query": "Royal Commission of Inquiry into Christchurch mosque attacks report recommendations",
+                "label": "Search for Royal Commission inquiry"
+              },
+              {
+                "knowledge_base_id": "QETGXQCZ48",
+                "query": "police investigation gunman Christchurch mosque shootings terrorism charges trial sentencing",
+                "label": "Search for gunman prosecution outcome"
+              },
+              {
+                "knowledge_base_id": "VZTRPFNDVK",
+                "query": "Christchurch mosque attacks 2019 history and aftermath",
+                "label": "Search for Christchurch mosque attacks history"
+              }
+            ]
+          },
+          "evaluate": {
+            "ms": 15017
+          },
+          "prefill": {
+            "ms": 994
+          },
+          "generate": {
+            "ms": 18455
+          },
+          "overhead_ms": 847,
+          "checkpoints_ms": {
+            "processing_active": 847,
+            "processing_done": 4658,
+            "search_active": 23194,
+            "topic_generation_done": 23194,
+            "eval_pending": 23194,
+            "eval_done": 38211,
+            "answering_active": 38211,
+            "text_start": 39205
+          },
+          "capture_version": 5,
+          "chat_total_ms": 56453,
+          "ttft_anchor": "chat_post",
+          "ttft_ms": 39205,
+          "ttft_event": "text-start"
+        },
+        "stream_timing": {
+          "ttft_anchor": "chat_post",
+          "ttft_ms": 39205,
+          "ttft_event": "text-start",
+          "chat_total_ms": 56453
+        },
+        "retrieved_chunks": [
+          {
+            "title": "Government Won't Progress Final 8 Recommendations of Christchurch Terror Attack Commission",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/27Qxxrk7cbKAkASsHSANdLOZUOXR2FtqP7fjnXdno5g.pdf",
+            "published_date": "2024-10-24",
+            "updated_date": "2024-10-24"
+          },
+          {
+            "title": "New Book Claims Missed Opportunities to Detect Christchurch Terrorist Ahead of March 15 Attacks",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/45qCcSaFKCx0zokjy0QimWf2CZBW3uFpw8UXF9y2HWQ.pdf",
+            "published_date": "2024-08-05",
+            "updated_date": "2024-08-05"
+          },
+          {
+            "title": "Government's Binning of Christchurch Terror Attack Recommendations Called 'Shameful' by Muslim Leaders",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/kjXKrBlN9svpC3_YrIDmJciBhcuBirRuZIUePLKvp_g.pdf",
+            "published_date": "2026-02-09",
+            "updated_date": "2026-02-09"
+          },
+          {
+            "title": "Mosque Attack Inquest: Terrorist's Radicalisation and Firearm Licensing Among Next Phase",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/45qCcSaFKCx0zokjy0QimWf2CZBW3uFpw8UXF9y2HWQ.pdf",
+            "published_date": "2024-08-05",
+            "updated_date": "2024-08-05"
+          },
+          {
+            "title": "Christchurch Terror Attacks: Coroner Continues Probe of Locked Door",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/ZmAUaQjIdWss1BwT1N8TKbvV9o7fLqksOJj-nhnESfw.pdf",
+            "published_date": "2026-06-09",
+            "updated_date": "2026-06-09"
+          },
+          {
+            "title": "Christchurch Terror Attack: Second Phase of Inquest Begins",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/vdAcLoxO7HAcKl1mIUbDqhwkRSTXgPCz07YqVnYJqA4.pdf",
+            "published_date": "2024-03-15",
+            "updated_date": "2024-03-15"
+          },
+          {
+            "title": "Mosque Attack Inquest Provides Long Overdue Answers",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/d87fMqi2jeElvekBwMmxF7ihKLgI3KY64XpQV2N0BYo.pdf",
+            "published_date": "2025-03-14",
+            "updated_date": "2025-03-14"
+          },
+          {
+            "title": "Court to Consider Christchurch Terrorist's Appeal Application",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/vtWN2w8isJiSlPtqGBUninxCo0eVusG-d_tyBn0-5b4.pdf",
+            "published_date": "2025-09-09",
+            "updated_date": "2025-09-09"
+          },
+          {
+            "title": "Christchurch Mosque Shooter Seeking to Appeal Convictions",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/LazkG6xkV5TzCIv4J_PxYJ94rCUfKju1r7yTAirSp_s.pdf",
+            "published_date": "2024-01-09",
+            "updated_date": "2024-01-09"
+          },
+          {
+            "title": "Christchurch Terrorist Exaggerating Prison Distress, Psychologist Tells Court",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/SAmbNV0qIt_UWnF-SyqeIWmnxK3557dNh2Tw7NnNw0E.pdf",
+            "published_date": "2024-03-15",
+            "updated_date": "2024-03-15"
+          },
+          {
+            "title": "Christchurch Mosque Shooter 'Wanted to Be Called a Terrorist', Ex-Lawyer Says",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/JheJHFVdOG9Chf6D8BNe14G0B2OGBiBMGDnvFYcc_wg.pdf",
+            "published_date": "2024-08-02",
+            "updated_date": "2024-08-02"
+          },
+          {
+            "title": "Christchurch Mosque Shootings: Community Fears Ongoing Threat of Another Attack",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/r4uQVz4kZfaftZYkGObNmRUhZNZWtMuDWijMj4HE4K4.pdf",
+            "published_date": "2024-08-02",
+            "updated_date": "2024-08-02"
+          },
+          {
+            "title": "SIS Undergoes Significant Transformation Since 2019 Christchurch Mosque Attacks",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/k-t9g4_aWElPCJ9AOM5ZIK1Yb0uo0V7kU0OoI3WS9LU.pdf",
+            "published_date": "2024-08-02",
+            "updated_date": "2024-08-02"
+          },
+          {
+            "title": "'Oozing pain': Plea for politicians to tackle hate speech",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/s4MZDS8YMRf-eTsU3exJB_jVdoTT3nX8kseDzFrpsg4.pdf",
+            "published_date": "2024-08-02",
+            "updated_date": "2024-08-02"
+          },
+          {
+            "id": 15,
+            "title": "Luxon Calls for Confronting Islamophobia on Sixth Anniversary of Christchurch Mosque Attacks",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/iQrGeoH1U17uFDVnE7L-_LXICIjV13xe9FhQeZvEYf4.pdf",
+            "published_date": "2025-03-15",
+            "updated_date": "2025-03-15"
+          },
+          {
+            "id": 16,
+            "title": "New Book Claims Missed Opportunities to Detect Christchurch Terrorist Ahead of March 15 Attacks",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/d0EyWsPTerrYj6aJu85C4CAWHu_rlVN-GLgXzrJ0kms.pdf",
+            "published_date": "2026-06-08",
+            "updated_date": "2026-06-08"
+          },
+          {
+            "id": 17,
+            "title": "Six Years Since Christchurch Mosque Attacks",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/rEJfKak6DGANLpO-tnPOevuBxVEX7kdwYPGWYFh9hhc.pdf",
+            "published_date": "2025-03-15",
+            "updated_date": "2025-03-15"
+          },
+          {
+            "id": 18,
+            "title": "'Oozing pain': Plea for politicians to tackle hate speech",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/rmbMY3JSu4JVoP_ADxizGMrhjTVFCs5nZb6tY4M74uA.pdf",
+            "published_date": "2026-07-24",
+            "updated_date": "2026-07-24"
+          },
+          {
+            "id": 19,
+            "title": "Christchurch Mosque Shootings: Community Fears Ongoing Threat of Another Attack",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/AjgR1c9HyvORCCcr4fVVCH3gs5c3JwSOCmBF_lKBHRE.pdf",
+            "published_date": "2025-03-13",
+            "updated_date": "2025-03-13"
+          },
+          {
+            "id": 20,
+            "title": "Christchurch Mosque Shooter Seeking to Appeal Convictions",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/mGtHSf9x1fLNjR41a9W-Ab4PWu39d3c73wHnpnnjFmc.pdf",
+            "published_date": "2026-02-09",
+            "updated_date": "2026-02-09"
+          },
+          {
+            "id": 21,
+            "title": "Christchurch Mosque Shooter Returns to Court for Appeal",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/BMQTaW-YIRTHTrQo3j-VZ1t8FwruKZU60e9RGJ6Us4k.pdf",
+            "published_date": "2026-02-10",
+            "updated_date": "2026-02-10"
+          },
+          {
+            "id": 22,
+            "title": "Muslims Fear Rising Hate as Seventh Anniversary of Christchurch Mosque Attack Approaches",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/7OVkxpP6YX-LKFmTljL4SCBnKIbpJwk1YZk1GuxABe0.pdf",
+            "published_date": "2026-03-13",
+            "updated_date": "2026-03-13"
+          },
+          {
+            "id": 23,
+            "title": "What can the US teach NZ about gun control? More than you might expect",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/xAd4yHDAblk976FoeA7U-2w7xHz77HPyfUzkkMQI9fE.pdf",
+            "published_date": "2024-10-25",
+            "updated_date": "2024-10-25"
+          },
+          {
+            "id": 24,
+            "title": "Christchurch Mosque Shooter 'Wanted to Be Called a Terrorist', Ex-Lawyer Says",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/AyD_u4O5QUgypjSlCCfruCuUzvFJpEdIar2OzV53FDM.pdf",
+            "published_date": "2026-02-10",
+            "updated_date": "2026-02-10"
+          },
+          {
+            "id": 25,
+            "title": "Tense Scenes as Christchurch Terrorist's Gun Licence Referees Give Evidence at Inquest",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/XbQ9t8y4DTeMDTYxLy4FbWfbFwdxiv0ILqFiDanV2IE.pdf",
+            "published_date": "2024-10-11",
+            "updated_date": "2024-10-11"
+          },
+          {
+            "id": 26,
+            "title": "Christchurch Terrorist Exaggerating Prison Distress, Psychologist Tells Court",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/AYRSdFEkg2l5VN_oTVTJsaEKOGT6HwWDLpwKW6Ow93Q.pdf",
+            "published_date": "2026-02-11",
+            "updated_date": "2026-02-11"
+          },
+          {
+            "id": 27,
+            "title": "Christchurch Terror Attack Foreseeable Amid 'Lax' Gun Laws, Inquest Told",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/-Pom7XRH4w-0_pAVLFYMftlEl_uGPGXeCEUtwuWNiQQ.pdf",
+            "published_date": "2024-10-21",
+            "updated_date": "2024-10-21"
+          },
+          {
+            "id": 28,
+            "title": "Christchurch Terror Attack: Second Phase of Inquest Begins",
+            "source": "s3://tahi-document-source/knowledgeBaseId=QETGXQCZ48/stage=published/MqF6JpbMp7FUfG90a0RKRh7qYAINktQQ6XmUCiIYr-w.pdf",
+            "published_date": "2024-10-08",
+            "updated_date": "2024-10-08"
+          },
+          {
+            "id": 29,
+            "title": "Religious Diversity in New Zealand: Communities, Practices, and Interfaith Relations",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/HA6jITL5CQuCQH8CJI2lRZAuBMGsQ3gIiQYlvo1Mi0U.pdf",
+            "published_date": "2011-04-27"
+          },
+          {
+            "id": 30,
+            "title": "Ethnic and Religious Intolerance in New Zealand: Historical Perspectives on Discrimination, Immigration, and Social Change",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/ts2hBaZBv9Dx1qj-o3g2pGfiHDD33ttOWNUCfElt-cY.pdf",
+            "published_date": "2011-02-17"
+          },
+          {
+            "id": 31,
+            "title": "Terrorism and Counter-Terrorism in New Zealand: History, Legislation, and International Engagement",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/y9pSQpOoqL4W4xOKjPVyoRSHvVNnhHR0znOk0mHmfbM.pdf",
+            "published_date": "2012-04-16"
+          },
+          {
+            "id": 32,
+            "title": "Ethnic and Religious Intolerance in New Zealand: Historical Perspectives on Discrimination, Immigration, and Social Change",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/ts2hBaZBv9Dx1qj-o3g2pGfiHDD33ttOWNUCfElt-cY.pdf",
+            "published_date": "2011-02-17"
+          },
+          {
+            "id": 33,
+            "title": "Terrorism and Counter-Terrorism in New Zealand: History, Legislation, and International Engagement",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/y9pSQpOoqL4W4xOKjPVyoRSHvVNnhHR0znOk0mHmfbM.pdf",
+            "published_date": "2012-04-16"
+          },
+          {
+            "id": 34,
+            "title": "Terrorism and Counter-Terrorism in New Zealand: History, Legislation, and International Engagement",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/y9pSQpOoqL4W4xOKjPVyoRSHvVNnhHR0znOk0mHmfbM.pdf",
+            "published_date": "2012-04-16"
+          },
+          {
+            "id": 35,
+            "title": "Canterbury Region: Comprehensive Geography, History, Culture, and Development",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/sRtY_i_4CB4Md-Ad2YiCfa6OXdLg8AN0UQ25QQxiu_w.pdf",
+            "published_date": "2009-03-02"
+          },
+          {
+            "id": 36,
+            "title": "Canterbury Region: Comprehensive Geography, History, Culture, and Development",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/sRtY_i_4CB4Md-Ad2YiCfa6OXdLg8AN0UQ25QQxiu_w.pdf",
+            "published_date": "2009-03-02"
+          },
+          {
+            "id": 37,
+            "title": "Canterbury Region: Comprehensive Geography, History, Culture, and Development",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/sRtY_i_4CB4Md-Ad2YiCfa6OXdLg8AN0UQ25QQxiu_w.pdf",
+            "published_date": "2009-03-02"
+          },
+          {
+            "id": 38,
+            "title": "Historic Heritage Preservation in New Zealand: From Colonial Times to Post-Earthquake Recovery",
+            "source": "s3://tahi-document-source/knowledgeBaseId=VZTRPFNDVK/stage=published/3BvgjbK-Bl90dX7ImgrHmjtjna7ZbITAL5ZgpLRvOto.pdf",
+            "published_date": "2014-08-14"
+          },
+          {
+            "id": 39,
+            "title": "Supporting Christchurch Attack Victims",
+            "source": "s3://tahi-document-source/knowledgeBaseId=MMHABK6HFZ/stage=published/1j2cSwPLJp8BDeRyrQprs5BVKfRmkIPBW4rP0XAOI2c.jpg",
+            "published_date": "2019-04-25"
+          },
+          {
+            "id": 40,
+            "title": "Longest-Running Halal Butcher in Christchurch",
+            "source": "s3://tahi-document-source/knowledgeBaseId=MMHABK6HFZ/stage=published/Kz0kFJmv4xKPR7EIkbMrpC9VJlgynOhpAWCur11nNUU.jpg",
+            "published_date": "2019-04-25"
+          },
+          {
+            "id": 41,
+            "title": "Supporting Christchurch Attack Victims",
+            "source": "s3://tahi-document-source/knowledgeBaseId=MMHABK6HFZ/stage=published/1j2cSwPLJp8BDeRyrQprs5BVKfRmkIPBW4rP0XAOI2c.jpg",
+            "published_date": "2019-04-25"
+          },
+          {
+            "id": 42,
+            "title": "Visit from CVOC Volunteers",
+            "source": "s3://tahi-document-source/knowledgeBaseId=MMHABK6HFZ/stage=published/1u-aK-J1W3LOMoZKFkmv53NXqMiXMmRsSwWixJFbz7s.jpg",
+            "published_date": "2019-04-25"
+          },
+          {
+            "id": 43,
+            "title": "Worshippers at Baitul Muqeet Mosque",
+            "source": "s3://tahi-document-source/knowledgeBaseId=MMHABK6HFZ/stage=published/BVwHEe1VGd_g-6EVumYv2xbgJEqnWx9ZqDA7_k6lygg.jpg",
+            "published_date": "2021-08-27"
+          }
+        ],
+        "sources": [
+          {
+            "num": 1,
+            "label": "Government Won't Progress Final 8 Recommendations of Christchurch Terror Attack Commission",
+            "url": "https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission"
+          },
+          {
+            "num": 2,
+            "label": "New Book Claims Missed Opportunities to Detect Christchurch Terrorist Ahead of March 15 Attacks",
+            "url": "https://www.rnz.co.nz/news/crime-and-justice/597535/new-book-claims-there-were-opportunities-to-detect-terrorist-ahead-of-march-15-attacks"
+          },
+          {
+            "num": 3,
+            "label": "Government's Binning of Christchurch Terror Attack Recommendations Called 'Shameful' by Muslim Leaders",
+            "url": "https://www.rnz.co.nz/news/national/523996/christchurch-terror-attacks-government-s-binning-of-recommendations-shameful-muslim-leader-says"
+          },
+          {
+            "num": 4,
+            "label": "Mosque Attack Inquest: Terrorist's Radicalisation and Firearm Licensing Among Next Phase",
+            "url": "https://www.rnz.co.nz/news/national/506311/mosque-attack-inquest-terrorist-s-radicalisation-and-firearm-licensing-among-next-phase"
+          },
+          {
+            "num": 5,
+            "label": "Christchurch Terror Attacks: Coroner Continues Probe of Locked Door",
+            "url": "https://www.rnz.co.nz/news/national/524131/christchurch-terror-attacks-coroner-continues-probe-of-locked-door"
+          },
+          {
+            "num": 6,
+            "label": "Christchurch Terror Attack: Second Phase of Inquest Begins",
+            "url": "https://www.rnz.co.nz/news/national/530088/christchurch-terror-attack-second-phase-of-inquest-begins-today"
+          },
+          {
+            "num": 7,
+            "label": "Mosque Attack Inquest Provides Long Overdue Answers",
+            "url": "https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers"
+          },
+          {
+            "num": 8,
+            "label": "Court to Consider Christchurch Terrorist's Appeal Application",
+            "url": "https://www.rnz.co.nz/news/national/586264/court-to-consider-christchurch-terrorist-s-appeal-application"
+          },
+          {
+            "num": 9,
+            "label": "Christchurch Mosque Shooter Seeking to Appeal Convictions",
+            "url": "https://www.rnz.co.nz/national/programmes/morningreport/audio/2019022223/christchurch-mosque-shooter-seeking-to-appeal-convictions"
+          },
+          {
+            "num": 10,
+            "label": "Christchurch Terrorist Exaggerating Prison Distress, Psychologist Tells Court",
+            "url": "https://www.rnz.co.nz/news/national/586535/christchurch-terrorist-exaggerating-prison-distress-psychologist-tells-court"
+          },
+          {
+            "num": 11,
+            "label": "Christchurch Mosque Shooter 'Wanted to Be Called a Terrorist', Ex-Lawyer Says",
+            "url": "https://www.rnz.co.nz/news/national/586356/christchurch-mosque-shooter-wanted-to-be-called-a-terrorist-ex-lawyer-says"
+          },
+          {
+            "num": 12,
+            "label": "Christchurch Mosque Shootings: Community Fears Ongoing Threat of Another Attack",
+            "url": "https://www.rnz.co.nz/news/national/544627/christchurch-mosque-shootings-community-fears-ongoing-threat-of-another-attack"
+          },
+          {
+            "num": 13,
+            "label": "SIS Undergoes Significant Transformation Since 2019 Christchurch Mosque Attacks",
+            "url": "https://www.rnz.co.nz/news/crime-and-justice/597650/sis-has-undergone-drastic-changes-since-mosque-attack-but-isn-t-all-seeing"
+          },
+          {
+            "num": 14,
+            "label": "'Oozing pain': Plea for politicians to tackle hate speech",
+            "url": "https://www.rnz.co.nz/news/political/781240/oozing-pain-plea-for-politicians-to-tackle-hate-speech"
+          }
+        ],
+        "recency": {
+          "max_published_date_retrieved": "2026-07-24",
+          "max_updated_date_retrieved": "2026-07-24",
+          "max_published_date_cited": null,
+          "max_updated_date_cited": null,
+          "retrieved_chunk_count": 43,
+          "retrieved_dated_count": 43,
+          "cited_marker_count": 14,
+          "cited_dated_count": 0,
+          "cited_unmatched_count": 14
+        }
+      },
+      "rubric": {
+        "failure_class": "Retrieval",
+        "sub_class": "Temporal conflation",
+        "evaluation_method": "Human",
+        "pass_criteria": "Response clearly distinguishes chronologically distinct events (attack 2019, trial, inquiries, subsequent legislation). Dates are present and accurate. No conflation of outcomes from different years.",
+        "fail_criteria": "Response merges events from different years into a single narrative without temporal markers. Dates absent or incorrect. Outcomes attributed to wrong time period.",
+        "automation_eligible": false,
+        "staging_only": false,
+        "performance_class": "",
+        "what_it_isolates": "",
+        "expected_ttft_profile": ""
+      },
+      "assessment": {
+        "summary_verdict": "likely_pass",
+        "tiers": [
+          {
+            "tier": 0,
+            "name": "Structural",
+            "status": "passed",
+            "verdict": "pass",
+            "commentary": "Structural check passed: live call returned a Tahi response (8552 characters). This is not a rubric pass/fail.",
+            "detail": {
+              "response_chars": 8552,
+              "mode": "live"
+            }
+          },
+          {
+            "tier": 1,
+            "name": "Rule-based",
+            "status": "passed",
+            "verdict": "pass",
+            "commentary": "Sources block check passed: response includes citation markers and a Sources or References section for human and machine reviewers.",
+            "detail": {
+              "checks": [
+                "sources_block_with_citations"
+              ],
+              "cite_markers_present": true,
+              "sources_section_present": true
+            }
+          },
+          {
+            "tier": 3,
+            "name": "LLM draft",
+            "status": "draft",
+            "verdict": "draft",
+            "commentary": "Draft commentary: the response references multiple time periods (2017, 2019, 2020, 2023, 2024, 2026). A human reviewer should confirm whether attack, inquiry, inquest, and government-response events remain chronologically distinct and whether dates are accurate against the rubric. Regression: prior machine verdict was pass; now draft.",
+            "detail": {
+              "source": "heuristic",
+              "prior_judge": {
+                "verdict": "pass",
+                "summary": "Pass: well-structured response with clear chronological distinctions and accurate citations.",
+                "run_at": "2026-06-17T12:07:29.028034+00:00",
+                "confidence": 0.95
+              }
+            }
+          },
+          {
+            "tier": 2,
+            "name": "Human review",
+            "status": "pending",
+            "verdict": "pending",
+            "commentary": "Human review pending: no reviewer verdict has been recorded yet. Tier 0-1 and tier 2 machine draft commentary do not replace expert sign-off.",
+            "detail": {}
+          }
+        ],
+        "comparison": {
+          "test_id": "R01",
+          "baseline_run_at": "2026-06-17T11:16:30.174324+00:00",
+          "current_run_at": "2026-10-23T19:51:48.113260+00:00",
+          "compatible": true,
+          "warnings": [],
+          "status": "stable",
+          "tier_changes": {
+            "0": {
+              "tier": 0,
+              "field": "tier0_verdict",
+              "baseline": "pass",
+              "current": "pass",
+              "change": "unchanged"
+            },
+            "1": {
+              "tier": 1,
+              "field": "tier1_verdict",
+              "baseline": "pass",
+              "current": "pass",
+              "change": "unchanged"
+            },
+            "2": {
+              "tier": 2,
+              "field": "tier2_verdict",
+              "baseline": "pending",
+              "current": "pending",
+              "change": "unchanged"
+            },
+            "3": {
+              "tier": 3,
+              "field": "tier3_verdict",
+              "baseline": "pass",
+              "current": "draft",
+              "change": "neutral"
+            }
+          },
+          "summary_change": {
+            "tier": null,
+            "field": "summary_verdict",
+            "baseline": "likely_pass",
+            "current": "likely_pass",
+            "change": "neutral"
+          },
+          "machine_review": {
+            "baseline_verdict": "pass",
+            "current_verdict": "draft",
+            "baseline_confidence": 0.95,
+            "current_confidence": null,
+            "change": "neutral",
+            "summary_changed": true
+          },
+          "response": {
+            "baseline_chars": 5890,
+            "current_chars": 8552,
+            "char_delta": 2662,
+            "baseline_source_count": 16,
+            "current_source_count": 24,
+            "source_delta": 8
+          }
+        }
+      },
+      "report_link": "https://script.google.com/macros/s/AKfycbxCSYXomcbO1qbO9eW9i9h5kmC8lH-LjO7ZCpygThmmQ3qG35ofLPe2gwtOkV3BN2VReQ/exec/R01/index.html"
+    }
+  ],
+  "pilot_tranche": [
+    "R01",
+    "R06",
+    "R05",
+    "S01",
+    "S07",
+    "G01",
+    "G03",
+    "A03",
+    "A01",
+    "U01",
+    "U14",
+    "C01"
+  ],
+  "only_ids": [
+    "R01"
+  ],
+  "run_config": {
+    "source": "caitlyn_api",
+    "capture_version": 1,
+    "captured_at": "2026-10-23T19:51:48.113271+00:00",
+    "agent_id": "5NR3N2X1DU",
+    "agent_alias_id": "TSTALIASID",
+    "error": "Caitlyn HTTP 403 for https://tahi.nz/api/v2/agents/5NR3N2X1DU/aliases/TSTALIASID: Your IP address has been blocked."
+  },
+  "recency_summary": {
+    "case_count": 1,
+    "min_max_published_date_retrieved": "2026-07-24",
+    "min_max_published_date_cited": null,
+    "min_max_updated_date_retrieved": "2026-07-24",
+    "min_max_updated_date_cited": null,
+    "cases_with_currency_warning": [],
+    "currency_warning_count": 0
+  },
+  "hub_url": "https://script.google.com/macros/s/AKfycbxCSYXomcbO1qbO9eW9i9h5kmC8lH-LjO7ZCpygThmmQ3qG35ofLPe2gwtOkV3BN2VReQ/exec/",
+  "run_json_link": "https://script.google.com/macros/s/AKfycbxCSYXomcbO1qbO9eW9i9h5kmC8lH-LjO7ZCpygThmmQ3qG35ofLPe2gwtOkV3BN2VReQ/exec/runs/20261023-195147-prd.json"
+}

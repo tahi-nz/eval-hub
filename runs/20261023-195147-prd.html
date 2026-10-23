@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>R01 / Retrieval / Temporal conflation</title>
+  
+  <style>
+:root {
+  color-scheme: light;
+  --text: #1c2430;
+  --muted: #5f6b7a;
+  --border: #dde3ea;
+  --surface: #f4f7fb;
+  --surface-2: #eef2f7;
+  --accent: #0f4c5c;
+  --accent-soft: #e8f3f6;
+  --pass: #0d6b3f;
+  --pass-bg: #e8f6ee;
+  --pass-bg-overall: #b8dcc8;
+  --pass-border: #9fd4b8;
+  --pass-border-overall: #6aab84;
+  --fail: #b42318;
+  --fail-bg: #fdeeed;
+  --fail-border: #f2b8b5;
+  --warn: #8a5a00;
+  --warn-bg: #fff8e8;
+  --warn-border: #f0d48a;
+  --neutral-bg: #f0f3f7;
+  --neutral-border: #c8d2dc;
+  --prompt: #0f3d75;
+  --prompt-text: #0a2847;
+  --prompt-soft: #d4e4f5;
+  --prompt-border: #7aa3d4;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 8px 24px rgba(16, 24, 40, 0.06);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: #295f4b;
+}
+.wrap {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+.wrap--wide {
+  max-width: 96rem;
+}
+.wrap--hub {
+  max-width: 90rem;
+}
+.case-layout-columns {
+  display: grid;
+  grid-template-columns: minmax(14rem, 21rem) minmax(0, 1fr);
+  gap: 1rem 1.25rem;
+  align-items: start;
+  margin-top: 1rem;
+  overflow: visible;
+}
+.case-layout-columns.is-details-open {
+  grid-template-columns: minmax(14rem, 21rem) minmax(0, 1fr) minmax(16rem, 24rem);
+}
+.case-context-column,
+.case-response-column,
+.case-details-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  overflow: visible;
+}
+.case-details-column {
+  display: none;
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+}
+.case-layout-columns.is-details-open .case-details-column {
+  display: flex;
+}
+.case-details-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.case-details-head h2 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--accent);
+}
+.case-details-column .case-details-head h2 {
+  color: #f4faf7;
+}
+.case-details-placeholder {
+  margin: 0;
+  padding: 1rem;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  background: var(--surface);
+}
+.case-details-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.case-details-panel[hidden] {
+  display: none !important;
+}
+.case-details-placeholder[hidden] {
+  display: none !important;
+}
+.tier-nav-card {
+  border-radius: 12px;
+  padding: 0.85rem 0.95rem;
+  box-shadow: var(--shadow);
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  border: 1px solid transparent;
+  border-left-width: 4px;
+}
+body:not([data-reviewer-admin="true"]) [data-hub-admin-only] {
+  display: none !important;
+}
+.tier-nav-card--pass {
+  background: var(--pass-bg);
+  border-color: var(--pass-border);
+  border-left-color: var(--pass);
+}
+.tier-nav-card--fail {
+  background: var(--fail-bg);
+  border-color: var(--fail-border);
+  border-left-color: var(--fail);
+}
+.tier-nav-card--warn {
+  background: var(--warn-bg);
+  border-color: var(--warn-border);
+  border-left-color: var(--warn);
+}
+.tier-nav-card--neutral {
+  background: var(--neutral-bg);
+  border-color: var(--neutral-border);
+  border-left-color: #8a96a3;
+}
+button.tier-nav-card {
+  cursor: pointer;
+}
+button.tier-nav-card:hover {
+  filter: brightness(0.98);
+}
+.tier-nav-card.is-active {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.tier-nav-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+.tier-nav-card h3 {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.tier-nav-card-commentary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.tier-nav-card-hint {
+  margin: 0.45rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.case-review-column,
+.case-response-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.case-response-column {
+  align-self: start;
+}
+.case-llm-slot {
+  flex: 0 0 auto;
+}
+.tahi-response-body {
+  min-width: 0;
+}
+@media (max-width: 900px) {
+  .case-layout-columns,
+  .case-layout-columns.is-details-open {
+    grid-template-columns: 1fr;
+  }
+  .case-details-column {
+    position: static;
+    max-height: none;
+  }
+}
+.results-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+}
+.workflow-timing-card {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.case-details-panel .workflow-timing-card {
+  margin: 0;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: none;
+  background: #fff;
+}
+.workflow-timing-nav-delta {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.workflow-timing-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.85rem;
+}
+.workflow-timing-head h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+.workflow-timing-total {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.workflow-timing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.workflow-timing-table th,
+.workflow-timing-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.45rem 0.35rem;
+  text-align: left;
+  vertical-align: top;
+}
+.workflow-timing-table tr:last-child th,
+.workflow-timing-table tr:last-child td {
+  border-bottom: none;
+}
+.workflow-timing-table th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.workflow-timing-stage {
+  font-weight: 600;
+  color: var(--text);
+}
+.workflow-timing-detail {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.workflow-timing-queries {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.workflow-timing-queries li {
+  margin: 0.1rem 0;
+}
+.workflow-timing-delta--slower {
+  color: var(--warn);
+  font-weight: 600;
+}
+.workflow-timing-delta--faster {
+  color: var(--pass);
+  font-weight: 600;
+}
+.workflow-timing-delta--neutral {
+  color: var(--muted);
+}
+.workflow-timing-footnote {
+  margin: 0.75rem 0 0;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.results-card {
+  border-radius: 12px;
+  padding: 0.85rem 0.95rem;
+  box-shadow: var(--shadow);
+  min-height: 5.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border: 1px solid transparent;
+  border-left-width: 4px;
+}
+.results-card-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.results-card-name {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.25;
+}
+.results-card-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.results-card-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.results-card-value--pass { color: var(--pass); }
+.results-card-value--fail { color: var(--fail); }
+.results-card-value--warn { color: var(--warn); }
+.results-card-value--neutral { color: var(--text); }
+.results-card-meta {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.results-card--pass {
+  background: var(--pass-bg);
+  border-color: var(--pass-border);
+  border-left-color: var(--pass);
+}
+.results-card--pass .results-card-meta { color: var(--pass); }
+.results-card--fail {
+  background: var(--fail-bg);
+  border-color: var(--fail-border);
+  border-left-color: var(--fail);
+}
+.results-card--fail .results-card-meta { color: var(--fail); }
+.results-card--warn {
+  background: var(--warn-bg);
+  border-color: var(--warn-border);
+  border-left-color: var(--warn);
+}
+.results-card--warn .results-card-meta { color: var(--warn); }
+.results-card--neutral {
+  background: var(--neutral-bg);
+  border-color: var(--neutral-border);
+  border-left-color: #8a96a3;
+}
+.results-card--overall {
+  grid-column: span 1;
+}
+.results-card--overall.results-card--pass {
+  background: var(--pass-bg-overall);
+  border-color: var(--pass-border-overall);
+  border-left-color: var(--pass);
+}
+.results-card--overall.results-card--pass .results-card-value {
+  color: #084a2d;
+}
+@media (min-width: 720px) {
+  .results-card--overall {
+    grid-column: span 1;
+  }
+}
+.confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid #b8dce6;
+}
+.viewer-gate-hint {
+  margin: 0.65rem 0 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+body[data-machine-review-visible="true"] [data-case-details-panel="machine"] .viewer-gate-hint {
+  display: none;
+}
+.machine-review-hidden {
+  display: none !important;
+}
+.machine-review-placeholder-card,
+.results-card--locked,
+.tier-nav-card--locked {
+  background: #eef1f4;
+  border-style: dashed;
+  border-color: #b8c2cc;
+  color: var(--text);
+}
+.results-card--locked .results-card-label,
+.results-card--locked .results-card-name,
+.tier-nav-card--locked .tier-nav-card-commentary {
+  color: var(--muted);
+}
+.results-card--locked .results-card-value {
+  color: #5c6875;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.tier-nav-card--locked {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.hub-cell-locked {
+  color: #5c6875;
+  background: #eef1f4;
+  border-color: #c5ced8;
+}
+[data-machine-review-placeholder][hidden],
+[data-machine-review-content][hidden],
+[data-machine-review-gated] > [hidden] {
+  display: none !important;
+}
+[data-machine-review-gated] {
+  min-width: 0;
+}
+.reviewer-auth-bar-wrap {
+  flex: 0 0 auto;
+  margin: 0;
+  align-self: flex-start;
+}
+.reviewer-auth-bar {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: 0.65rem;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff0e0;
+  box-shadow: var(--shadow);
+}
+body[data-reviewer-signed-in="true"] .reviewer-auth-bar:not(.reviewer-auth-bar--error) {
+  background: #e6f4ea;
+}
+body[data-reviewer-signed-in="false"] .reviewer-auth-bar:not(.reviewer-auth-bar--error) {
+  background: #fff0e0;
+}
+.reviewer-auth-bar--error {
+  border-color: var(--fail-border);
+  background: var(--fail-bg);
+  flex-wrap: wrap;
+}
+.reviewer-auth-bar--shake {
+  animation: reviewer-auth-shake 0.35s ease;
+}
+@keyframes reviewer-auth-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+.reviewer-auth-status {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.reviewer-auth-status--signed-in {
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.reviewer-auth-status--error {
+  flex: 1 1 100%;
+  order: -1;
+  color: var(--fail);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--fail-border);
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12);
+}
+.reviewer-auth-status--loading {
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.reviewer-auth-actions {
+  display: inline-flex;
+  align-items: center;
+}
+.reviewer-auth-bar--error .reviewer-auth-field input {
+  border-color: var(--fail-border);
+  background: #fff;
+}
+.reviewer-auth-form {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem 0.75rem;
+  align-items: flex-end;
+  margin: 0;
+}
+.reviewer-auth-form[hidden] {
+  display: none !important;
+}
+.reviewer-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.reviewer-auth-form--locked .reviewer-auth-field input {
+  background: var(--surface);
+  color: var(--muted);
+  border-color: #d5dbe3;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+.reviewer-auth-form--locked .reviewer-auth-field span {
+  opacity: 0.75;
+}
+.reviewer-auth-field input {
+  min-width: 9rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.88rem;
+}
+.llm-assessment-toggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.llm-assessment-toggle {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+}
+.llm-assessment-toggle:hover,
+.llm-assessment-toggle[aria-expanded="true"] {
+  background: var(--accent-soft);
+}
+.llm-detail-panel {
+  margin: 0;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  align-self: start;
+}
+.llm-detail-panel.is-collapsed {
+  display: none;
+}
+.llm-detail-panel.is-open {
+  display: block;
+}
+.case-details-panel .llm-detail-panel {
+  margin: 0;
+}
+.case-details-panel .human-verdict-panel {
+  margin: 0;
+  box-shadow: none;
+}
+.llm-detail-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.llm-detail-panel-head h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+.llm-detail-panel-hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.llm-detail-panel dl {
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.llm-detail-panel dt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  cursor: help;
+  text-decoration: underline dotted var(--neutral-border);
+  text-underline-offset: 0.15em;
+  width: fit-content;
+}
+.llm-detail-panel dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.92rem;
+}
+.llm-assessment-pop {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+}
+.llm-assessment-pop:hover {
+  background: var(--accent-soft);
+}
+.llm-assessment-dialog {
+  width: min(42rem, calc(100vw - 2rem));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: var(--shadow);
+}
+.llm-assessment-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.45);
+}
+.llm-assessment-dialog-inner {
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+.llm-assessment-dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.llm-assessment-dialog-head h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--accent);
+}
+.llm-assessment-dialog-close {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+  font-size: 0.82rem;
+}
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 1rem;
+  font-size: 0.92rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.meta-table th, .meta-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.meta-table tr:last-child th, .meta-table tr:last-child td { border-bottom: none; }
+.meta-table th {
+  width: 34%;
+  background: var(--surface);
+  font-weight: 600;
+}
+.rubric-block {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.rubric-block h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.rubric-block p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.rubric-block--prompt {
+  background: linear-gradient(180deg, #c5daf2 0%, var(--prompt-soft) 100%);
+  border: 1px solid var(--prompt-border);
+  border-left: 4px solid var(--prompt);
+  box-shadow: 0 2px 8px rgba(15, 61, 117, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  padding: 1rem 1.05rem;
+}
+.rubric-block--prompt h3 {
+  color: var(--prompt);
+  font-weight: 700;
+}
+.rubric-block--prompt p {
+  color: var(--prompt-text);
+}
+@media (max-width: 900px) {
+  .case-layout-columns {
+    grid-template-columns: 1fr;
+  }
+}
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+  padding: 1.25rem 1.35rem;
+}
+.banner__main {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+.banner__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem 0.65rem;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+.banner h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.65rem;
+  font-weight: 650;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+.banner p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.content h1 {
+  font-size: 1.35rem;
+  margin: 2rem 0 1rem;
+  color: var(--accent);
+}
+.content h2 {
+  font-size: 1.05rem;
+  margin: 1.75rem 0 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.content h3, .content h4 {
+  margin: 1.25rem 0 0.5rem;
+}
+.content p, .content li { font-size: 1rem; }
+.content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.25rem;
+  font-size: 0.95rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.content th, .content td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+}
+.content tr:last-child th, .content tr:last-child td { border-bottom: none; }
+.content th {
+  background: var(--surface);
+  width: 32%;
+  font-weight: 600;
+}
+.content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+.content em { color: var(--muted); font-size: 0.92rem; }
+.content a { color: var(--accent); text-decoration: none; }
+.content a:hover { text-decoration: underline; }
+.hub-nav {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.hub-nav--banner {
+  margin: 0;
+  flex: 0 0 auto;
+}
+.banner__tools .hub-nav--banner {
+  margin: 0;
+}
+.banner__tools .hub-nav--banner a {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.hub-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.assessment {
+  margin: 1.75rem 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+.assessment > h2 {
+  margin: 0 0 0.85rem;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.verdict-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid var(--neutral-border);
+  background: var(--neutral-bg);
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+.verdict-banner-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.verdict-banner-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.verdict-banner--pass {
+  background: var(--pass-bg);
+  border-color: var(--pass-border);
+  color: var(--pass);
+}
+.verdict-banner--fail {
+  background: var(--fail-bg);
+  border-color: var(--fail-border);
+  color: var(--fail);
+}
+.verdict-banner--warn {
+  background: var(--warn-bg);
+  border-color: var(--warn-border);
+  color: var(--warn);
+}
+.verdict-banner--neutral {
+  background: var(--neutral-bg);
+  border-color: var(--neutral-border);
+  color: var(--text);
+}
+.assessment-tiers {
+  display: grid;
+  gap: 0.85rem;
+}
+.assessment-tier {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.95rem 1.05rem;
+  box-shadow: var(--shadow);
+  margin: 0;
+}
+.assessment-tier-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+.assessment-tier h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--text);
+}
+.assessment-tier-commentary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.verdict-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.verdict-badge--pass {
+  color: var(--pass);
+  background: var(--pass-bg);
+  border-color: var(--pass-border);
+}
+.verdict-badge--fail {
+  color: var(--fail);
+  background: var(--fail-bg);
+  border-color: var(--fail-border);
+}
+.verdict-badge--warn {
+  color: var(--warn);
+  background: var(--warn-bg);
+  border-color: var(--warn-border);
+}
+.verdict-badge--neutral {
+  color: var(--muted);
+  background: var(--neutral-bg);
+  border-color: var(--neutral-border);
+}
+.verdict-pass { color: var(--pass); font-weight: 700; }
+.verdict-fail { color: var(--fail); font-weight: 700; }
+.verdict-pending, .verdict-review, .verdict-draft, .verdict-inconclusive, .verdict-likely_pass {
+  color: var(--warn);
+  font-weight: 700;
+}
+.hub-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+.hub-table {
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 100%;
+  min-width: 52rem;
+  font-size: 0.82rem;
+  table-layout: fixed;
+}
+.hub-table th,
+.hub-table td {
+  padding: 0.3rem 0.35rem;
+  vertical-align: top;
+}
+.hub-table th {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.hub-table td {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.hub-table .verdict-badge,
+.hub-table .confidence-badge {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.1rem 0.32rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+  line-height: 1.25;
+  text-align: center;
+}
+.hub-table .verdict-badge--pass {
+  color: #0d6b52;
+  background: #e6f6ef;
+  border-color: #9fd4c0;
+}
+.hub-table .verdict-badge--warn {
+  color: #9a6400;
+  background: #fff6df;
+  border-color: #ecd084;
+}
+.hub-table .verdict-badge--neutral {
+  color: #4b5563;
+  background: #eef1f4;
+  border-color: #c5ced8;
+}
+.hub-table .confidence-badge {
+  color: #0b5568;
+  background: #e7f4f8;
+  border: 1px solid #b8dce6;
+  border-radius: 999px;
+  padding: 0.1rem 0.32rem;
+}
+.hub-col-test { width: 6.25rem; }
+.hub-col-class { width: 5.4rem; }
+.hub-col-method { width: 3.4rem; }
+.hub-col-run { width: 3.6rem; }
+.hub-col-dur { width: 2.8rem; }
+.hub-col-verdict { width: 4.1rem; }
+.hub-col-conf { width: 3rem; }
+.hub-col-summary { width: 4.4rem; }
+.hub-table-test {
+  padding-right: 0.35rem;
+}
+.hub-test-id-link {
+  display: inline-block;
+  text-decoration: none;
+}
+.hub-test-id-link:hover .hub-test-id {
+  border-color: var(--accent);
+  background: #dceefb;
+}
+.hub-test-id {
+  display: inline-block;
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #0e4a6f;
+  background: #e8f2f8;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: 0.1rem 0.42rem;
+  line-height: 1.25;
+}
+.hub-table-test a.hub-test-id-link,
+.hub-table-test > strong {
+  white-space: nowrap;
+}
+.hub-table-test > strong {
+  display: inline-block;
+}
+.hub-run-at {
+  display: inline-block;
+  font-size: 0.76rem;
+  line-height: 1.2;
+  color: var(--text);
+  white-space: nowrap;
+}
+.hub-run-meta {
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1.2;
+}
+.hub-compare-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin-top: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  line-height: 1.25;
+  max-width: 100%;
+}
+.hub-compare-link .hub-compare-badge {
+  align-self: flex-start;
+}
+.hub-compare-link:hover { text-decoration: underline; }
+.hub-compare-badge {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+.hub-compare-badge--improved {
+  background: var(--pass-bg); color: var(--pass); border: 1px solid var(--pass-border);
+}
+.hub-compare-badge--regressed {
+  background: var(--fail-bg); color: var(--fail); border: 1px solid var(--fail-border);
+}
+.hub-compare-badge--stable {
+  background: var(--neutral-bg); color: #5c6875; border: 1px solid var(--neutral-border);
+}
+.hub-compare-badge--mixed {
+  background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-border);
+}
+.compare-nav-card { margin-top: 0.35rem; }
+.hub-version {
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--surface);
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+}
+.human-verdict-panel {
+  margin: 0.75rem 0 0;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.human-verdict-panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.98rem;
+  color: var(--text);
+}
+.human-verdict-hint {
+  margin: 0 0 0.85rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.human-verdict-status {
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.human-verdict-status--saved {
+  color: var(--pass);
+  font-weight: 600;
+}
+.human-verdict-status--error {
+  color: var(--fail);
+  font-weight: 600;
+}
+.human-verdict-form {
+  display: grid;
+  gap: 0.75rem;
+}
+.human-verdict-field {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+}
+.human-verdict-field span {
+  font-weight: 600;
+  color: var(--muted);
+}
+.human-verdict-field select,
+.human-verdict-field textarea {
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.92rem;
+}
+.hub-table th { background: var(--surface-2); }
+.hub-table tbody tr:hover { background: #fafcff; }
+.content .hub-table-wrap .hub-table {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.tahi-response {
+  margin-top: 0;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.tahi-response > h2 {
+  margin-top: 0;
+}
+.sources-block {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border);
+}
+.sources-block h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.sources-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+.sources-list li + li {
+  margin-top: 0.35rem;
+}
+.source-entry-title {
+  line-height: 1.45;
+}
+.source-entry-num {
+  font-weight: 700;
+  color: var(--text);
+}
+.source-entry-label {
+  color: var(--text);
+}
+.source-entry-url {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--accent);
+  font-size: 0.84rem;
+  word-break: break-all;
+  text-decoration: none;
+}
+.source-entry-url:hover {
+  text-decoration: underline;
+}
+.sources-list a {
+  color: var(--accent);
+  word-break: break-word;
+}
+.tahi-response a {
+  color: var(--accent);
+}
+.cite-ref {
+  font-size: 0.78em;
+  line-height: 0;
+  margin-left: 0.05em;
+}
+.cite-ref a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+.cite-ref a:hover {
+  text-decoration: underline;
+}
+.sources-warning {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--warn-border);
+  border-radius: 10px;
+  background: var(--warn-bg);
+}
+.sources-warning-title {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+  color: var(--warn);
+  font-size: 0.9rem;
+}
+.sources-warning-detail {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.llm-assessment-detail {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.llm-assessment-detail summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+}
+.llm-assessment-detail dl {
+  margin: 0.75rem 0 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.llm-assessment-detail dt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.llm-assessment-detail dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.92rem;
+}
+.footer {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+@media print {
+  body { background: #fff; }
+  .wrap { max-width: none; padding: 0.5in; }
+  .banner, .assessment-tier, .tahi-response, .content table { box-shadow: none; }
+  .banner { break-after: avoid; }
+  .content h1, .content h2 { break-after: avoid; }
+}
+</style>
+</head>
+<body data-viewer-can-view-llm-detail="false">
+  <div class="wrap wrap--wide">
+    <header class="banner">
+      <div class="banner__main">
+        <h1>R01 / Retrieval / Temporal conflation</h1>
+        <p>NZ Geo Tahi evaluation evidence · 2026-10-24 08:52 NZDT · PRD · Tahi_Test_Suite-2</p>
+      </div>
+      
+    </header>
+    <main class="content">
+      <div class="results-strip"><div class="results-card results-card--pass results-card--overall"><div class="results-card-label">Overall</div><div class="results-card-name">Assessment summary</div><div class="results-card-footer"><div class="results-card-value results-card-value--pass">Likely pass</div></div></div><div class="results-card results-card--pass"><div class="results-card-label">Tier 0</div><div class="results-card-name">Structural</div><div class="results-card-footer"><div class="results-card-value results-card-value--pass">Pass</div></div></div><div class="results-card results-card--pass"><div class="results-card-label">Tier 1</div><div class="results-card-name">Rule-based</div><div class="results-card-footer"><div class="results-card-value results-card-value--pass">Pass</div></div></div><div class="results-card results-card--warn"><div class="results-card-label">Tier 2</div><div class="results-card-name">Machine review (placeholder draft)</div><div class="results-card-footer"><div class="results-card-value results-card-value--warn">Draft</div></div></div><div class="results-card results-card--warn" data-human-verdict-strip><div class="results-card-label">Tier 3</div><div class="results-card-name">Human review</div><div class="results-card-footer"><div class="results-card-value results-card-value--warn">Pending review</div></div></div></div><div class="case-layout-columns" data-case-layout><div class="case-context-column"><div class="rubric-block rubric-block--prompt"><h3>Prompt</h3><p>What happened with the investigation following the Christchurch mosque attacks?</p></div><div class="rubric-block"><h3>Pass criteria</h3><p>Response clearly distinguishes chronologically distinct events (attack 2019, trial, inquiries, subsequent legislation). Dates are present and accurate. No conflation of outcomes from different years.</p></div><div class="rubric-block"><h3>Fail criteria</h3><p>Response merges events from different years into a single narrative without temporal markers. Dates absent or incorrect. Outcomes attributed to wrong time period.</p></div><button type="button" class="tier-nav-card tier-nav-card--neutral" data-tier-nav-card data-details-target="workflow-timing" data-hub-admin-only aria-expanded="false"><div class="tier-nav-card-head"><h3>Workflow timing</h3><span class="verdict-badge verdict-badge--neutral">57.7s</span></div><p class="tier-nav-card-commentary">TTFT 39.2s · Class D · Generate 18.5s</p><p class="tier-nav-card-hint">Open workflow timing breakdown</p></button><button type="button" class="tier-nav-card tier-nav-card--pass" data-tier-nav-card data-details-target="tier0" aria-expanded="false"><div class="tier-nav-card-head"><h3>Structural</h3><span class="verdict-badge verdict-badge--pass">Pass</span></div><p class="tier-nav-card-commentary">Structural check passed: live call returned a Tahi response (8552 characters). This is not a rubric pass/fail.</p></button><button type="button" class="tier-nav-card tier-nav-card--pass" data-tier-nav-card data-details-target="tier1" aria-expanded="false"><div class="tier-nav-card-head"><h3>Rule-based</h3><span class="verdict-badge verdict-badge--pass">Pass</span></div><p class="tier-nav-card-commentary">Sources block check passed: response includes citation markers and a Sources or References section for human and machine reviewers.</p></button><button type="button" class="tier-nav-card tier-nav-card--warn" data-tier-nav-card data-details-target="machine" aria-expanded="false"><div class="tier-nav-card-head"><h3>Machine review (placeholder draft)</h3><span class="verdict-badge verdict-badge--warn">Draft</span></div><p class="tier-nav-card-commentary">Draft commentary: the response references multiple time periods (2017, 2019, 2020, 2023, 2024, 2026). A human reviewer should confirm whether attack, inquiry, inquest, and government-response events remain chronologically distinct and whether dates are accurate against the rubric. Regression: prior machine verdict was pass; now draft.</p><p class="tier-nav-card-hint">Open machine review draft</p></button><button type="button" class="tier-nav-card tier-nav-card--warn" data-tier-nav-card data-details-target="human" aria-expanded="false" data-human-verdict-card><div class="tier-nav-card-head"><h3>Human review</h3><span class="verdict-badge verdict-badge--warn">Pending review</span></div><p class="tier-nav-card-commentary">Human review pending: no reviewer verdict has been recorded yet. Tier 0-1 and tier 2 machine draft commentary do not replace expert sign-off.</p><p class="tier-nav-card-hint">Record human verdict</p></button></div><div class="case-response-column"><section class="tahi-response" data-tahi-response><h2>Tahi response</h2><div class="tahi-response-body"><p>The investigation and inquiry process following the 15 March 2019 Christchurch mosque attacks — in which 51 worshippers were murdered at Al Noor Mosque and Linwood Islamic Centre — has been extensive, multi-layered, and at times deeply contentious. It has involved a Royal Commission of Inquiry, a coronial inquest in two phases, and ongoing legal proceedings against the perpetrator.</p>
+<h2>The Royal Commission of Inquiry</h2>
+<p>A Royal Commission of Inquiry was established in the wake of the attacks and released its report in December 2020. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">1</a></sup> The commission undertook 18 months of intense inquiry, examining evidence including community submissions, Cabinet papers, ministerial briefings, police statements, financial records, social media reports, and phone records. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/crime-and-justice/597535/new-book-claims-there-were-opportunities-to-detect-terrorist-ahead-of-march-15-attacks" target="_blank" rel="noopener noreferrer">2</a></sup> It made 44 recommendations covering areas such as firearms licensing, intelligence agency reform, hate speech laws, and community safety. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">1</a></sup></p>
+<p>The then-Labour government promised to implement all 44 recommendations. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">1</a></sup> However, in August 2024, the coalition government under Prime Minister Christopher Luxon announced it would not progress the final eight of those recommendations, saying the coordinated government response "has concluded" after five years. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">1</a></sup> Of the 44 recommendations, 36 had been implemented or integrated into ongoing work programmes. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">1</a></sup></p>
+<p>The eight recommendations that were dropped included strengthening hate speech laws, establishing a national intelligence and security agency, requiring health professionals to report firearms injuries to police, and creating a counter-terrorism advisory group. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523996/christchurch-terror-attacks-government-s-binning-of-recommendations-shameful-muslim-leader-says" target="_blank" rel="noopener noreferrer">3</a></sup> Muslim community leaders reacted with outrage. Federation of Islamic Associations spokesperson Abdur Razzaq Khan called the decision "shameful," noting that the terrorist had accidentally shot himself before the attack and attended Dunedin Hospital — a fact that, if reported to police, could have flagged concerns about his firearms ownership. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523996/christchurch-terror-attacks-government-s-binning-of-recommendations-shameful-muslim-leader-says" target="_blank" rel="noopener noreferrer">3</a></sup></p>
+<p>Changes that <em>were</em> implemented as a result of the Royal Commission included the creation of New Zealand's first National Security Strategy, the establishment of the Firearms Safety Authority and the Ministry for Ethnic Communities, and a public awareness campaign for identifying signs of violent extremism. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">1</a></sup></p>
+<h2>The Coronial Inquest</h2>
+<p>Separate from the Royal Commission, Deputy Chief Coroner Brigitte Windley presided over what has been described as the largest and most complex inquest in New Zealand's history. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/506311/mosque-attack-inquest-terrorist-s-radicalisation-and-firearm-licensing-among-next-phase" target="_blank" rel="noopener noreferrer">4</a></sup></p>
+<p><strong>Phase One</strong> examined 10 issues relating to the events of 15 March 2019 itself — including police and ambulance response times, medical triage, emergency service coordination, and whether deaths could have been prevented. It also investigated why an emergency exit door at Al Noor Mosque failed to open during the shooting. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/524131/christchurch-terror-attacks-coroner-continues-probe-of-locked-door" target="_blank" rel="noopener noreferrer">5</a></sup> This phase concluded in late 2023.</p>
+<p><strong>Phase Two</strong> began in October 2024 and focused on how the terrorist obtained his firearms licence. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/530088/christchurch-terror-attack-second-phase-of-inquest-begins-today" target="_blank" rel="noopener noreferrer">6</a></sup> The inquest heard that the police firearms licensing regime at the time was understaffed, underfunded, and overworked. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers" target="_blank" rel="noopener noreferrer">7</a></sup> A critical loophole allowed people — including the terrorist — to obtain a standard firearms licence and purchase centrefire semi-automatic rifles that could be fitted with high-capacity magazines, which were entirely unregulated. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers" target="_blank" rel="noopener noreferrer">7</a></sup> Police had made multiple attempts to warn successive governments about this loophole, but political will was lacking until 51 lives were lost. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers" target="_blank" rel="noopener noreferrer">7</a></sup></p>
+<p>The inquest also heard that the terrorist, Brenton Tarrant, submitted his firearms licence application just 15 days after arriving in New Zealand in August 2017, and that his referees — a gaming friend aware of his extremist views, and that friend's father — described him as a "good, outstanding young man." <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/530088/christchurch-terror-attack-second-phase-of-inquest-begins-today" target="_blank" rel="noopener noreferrer">6</a></sup> Windley adjourned the second phase with evidence only partially heard, and said she would also write her findings for the first phase. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers" target="_blank" rel="noopener noreferrer">7</a></sup></p>
+<h2>The Perpetrator's Legal Proceedings</h2>
+<p>Tarrant pleaded guilty to 51 counts of murder, 40 counts of attempted murder, and one terrorism charge in March 2020, and was sentenced to life imprisonment without parole in August 2020. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/586264/court-to-consider-christchurch-terrorist-s-appeal-application" target="_blank" rel="noopener noreferrer">8</a></sup> In February 2026, a Court of Appeal hearing began to determine whether he could vacate those guilty pleas and stand trial. <sup class="cite-ref"><a href="https://www.rnz.co.nz/national/programmes/morningreport/audio/2019022223/christchurch-mosque-shooter-seeking-to-appeal-convictions" target="_blank" rel="noopener noreferrer">9</a></sup> Tarrant claimed his guilty plea was made under duress due to harsh prison conditions and poor mental health, but a forensic psychologist challenged those claims, and his former lawyers testified he had consistently indicated his intention to plead guilty. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/586535/christchurch-terrorist-exaggerating-prison-distress-psychologist-tells-court" target="_blank" rel="noopener noreferrer">10</a></sup><sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/586356/christchurch-mosque-shooter-wanted-to-be-called-a-terrorist-ex-lawyer-says" target="_blank" rel="noopener noreferrer">11</a></sup></p>
+<h2>Ongoing Concerns</h2>
+<p>Six years on, many in the Muslim community remain fearful. Some members believe a similar attack would not be foiled today, citing gaps in intelligence oversight and the scrapping of key recommendations. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/national/544627/christchurch-mosque-shootings-community-fears-ongoing-threat-of-another-attack" target="_blank" rel="noopener noreferrer">12</a></sup> New Zealand's Security Intelligence Service (SIS) has undergone significant changes since 2019, but a new book by academics Chris Wilson and Michal Dziwulski argues that warning signs were missed and that the Royal Commission failed to adequately examine the terrorist's extensive online activity. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/crime-and-justice/597650/sis-has-undergone-drastic-changes-since-mosque-attack-but-isn-t-all-seeing" target="_blank" rel="noopener noreferrer">13</a></sup> Police data cited in mid-2026 showed one hate crime against a Muslim occurring every 54 hours in New Zealand. <sup class="cite-ref"><a href="https://www.rnz.co.nz/news/political/781240/oozing-pain-plea-for-politicians-to-tackle-hate-speech" target="_blank" rel="noopener noreferrer">14</a></sup></p>
+<p>RNZ's most recent coverage used in Tahi is from 24/07/2026. The situation regarding the Court of Appeal proceedings and the coronial inquest findings may have developed further since then.</p><section class="sources-block"><h3>Sources</h3><ul class="sources-list"><li id="source-1" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[1]</span> <span class="source-entry-label">Government Won&#x27;t Progress Final 8 Recommendations of Christchurch Terror Attack Commission</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/523941/government-won-t-progress-remaining-8-recommendations-of-christchurch-terror-attack-commission</a></li><li id="source-2" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[2]</span> <span class="source-entry-label">New Book Claims Missed Opportunities to Detect Christchurch Terrorist Ahead of March 15 Attacks</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/crime-and-justice/597535/new-book-claims-there-were-opportunities-to-detect-terrorist-ahead-of-march-15-attacks" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/crime-and-justice/597535/new-book-claims-there-were-opportunities-to-detect-terrorist-ahead-of-march-15-attacks</a></li><li id="source-3" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[3]</span> <span class="source-entry-label">Government&#x27;s Binning of Christchurch Terror Attack Recommendations Called &#x27;Shameful&#x27; by Muslim Leaders</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/523996/christchurch-terror-attacks-government-s-binning-of-recommendations-shameful-muslim-leader-says" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/523996/christchurch-terror-attacks-government-s-binning-of-recommendations-shameful-muslim-leader-says</a></li><li id="source-4" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[4]</span> <span class="source-entry-label">Mosque Attack Inquest: Terrorist&#x27;s Radicalisation and Firearm Licensing Among Next Phase</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/506311/mosque-attack-inquest-terrorist-s-radicalisation-and-firearm-licensing-among-next-phase" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/506311/mosque-attack-inquest-terrorist-s-radicalisation-and-firearm-licensing-among-next-phase</a></li><li id="source-5" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[5]</span> <span class="source-entry-label">Christchurch Terror Attacks: Coroner Continues Probe of Locked Door</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/524131/christchurch-terror-attacks-coroner-continues-probe-of-locked-door" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/524131/christchurch-terror-attacks-coroner-continues-probe-of-locked-door</a></li><li id="source-6" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[6]</span> <span class="source-entry-label">Christchurch Terror Attack: Second Phase of Inquest Begins</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/530088/christchurch-terror-attack-second-phase-of-inquest-begins-today" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/530088/christchurch-terror-attack-second-phase-of-inquest-begins-today</a></li><li id="source-7" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[7]</span> <span class="source-entry-label">Mosque Attack Inquest Provides Long Overdue Answers</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/531794/mosque-attack-inquest-provides-long-overdue-answers</a></li><li id="source-8" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[8]</span> <span class="source-entry-label">Court to Consider Christchurch Terrorist&#x27;s Appeal Application</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/586264/court-to-consider-christchurch-terrorist-s-appeal-application" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/586264/court-to-consider-christchurch-terrorist-s-appeal-application</a></li><li id="source-9" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[9]</span> <span class="source-entry-label">Christchurch Mosque Shooter Seeking to Appeal Convictions</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/national/programmes/morningreport/audio/2019022223/christchurch-mosque-shooter-seeking-to-appeal-convictions" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/national/programmes/morningreport/audio/2019022223/christchurch-mosque-shooter-seeking-to-appeal-convictions</a></li><li id="source-10" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[10]</span> <span class="source-entry-label">Christchurch Terrorist Exaggerating Prison Distress, Psychologist Tells Court</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/586535/christchurch-terrorist-exaggerating-prison-distress-psychologist-tells-court" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/586535/christchurch-terrorist-exaggerating-prison-distress-psychologist-tells-court</a></li><li id="source-11" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[11]</span> <span class="source-entry-label">Christchurch Mosque Shooter &#x27;Wanted to Be Called a Terrorist&#x27;, Ex-Lawyer Says</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/586356/christchurch-mosque-shooter-wanted-to-be-called-a-terrorist-ex-lawyer-says" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/586356/christchurch-mosque-shooter-wanted-to-be-called-a-terrorist-ex-lawyer-says</a></li><li id="source-12" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[12]</span> <span class="source-entry-label">Christchurch Mosque Shootings: Community Fears Ongoing Threat of Another Attack</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/national/544627/christchurch-mosque-shootings-community-fears-ongoing-threat-of-another-attack" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/national/544627/christchurch-mosque-shootings-community-fears-ongoing-threat-of-another-attack</a></li><li id="source-13" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[13]</span> <span class="source-entry-label">SIS Undergoes Significant Transformation Since 2019 Christchurch Mosque Attacks</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/crime-and-justice/597650/sis-has-undergone-drastic-changes-since-mosque-attack-but-isn-t-all-seeing" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/crime-and-justice/597650/sis-has-undergone-drastic-changes-since-mosque-attack-but-isn-t-all-seeing</a></li><li id="source-14" class="source-entry"><div class="source-entry-title"><span class="source-entry-num">[14]</span> <span class="source-entry-label">&#x27;Oozing pain&#x27;: Plea for politicians to tackle hate speech</span></div><a class="source-entry-url" href="https://www.rnz.co.nz/news/political/781240/oozing-pain-plea-for-politicians-to-tackle-hate-speech" target="_blank" rel="noopener noreferrer">https://www.rnz.co.nz/news/political/781240/oozing-pain-plea-for-politicians-to-tackle-hate-speech</a></li></ul></section></div></section></div><aside class="case-details-column" data-case-details-column><div class="case-details-head"><h2 data-case-details-title>Review</h2><button type="button" class="llm-assessment-toggle" data-case-details-close>Close</button></div><p class="case-details-placeholder" data-case-details-placeholder>Select a card to open review details or actions.</p><div class="case-details-panel" data-case-details-panel="tier0" hidden><p class="assessment-tier-commentary">Structural check passed: live call returned a Tahi response (8552 characters). This is not a rubric pass/fail.</p></div><div class="case-details-panel" data-case-details-panel="tier1" hidden><p class="assessment-tier-commentary">Sources block check passed: response includes citation markers and a Sources or References section for human and machine reviewers.</p></div><div class="case-details-panel" data-case-details-panel="machine" hidden><p class="viewer-gate-hint">Machine review detail is available to signed-in reviewers with access.</p><div class="case-llm-slot" data-llm-slot></div></div><div class="case-details-panel" data-case-details-panel="human" hidden><section class="human-verdict-panel" data-human-verdict-panel data-run-id="20261023-195245-prd-r01" data-test-id="R01"><h2>Human review (Tier 3)</h2><p class="human-verdict-hint">Record your verdict for this case. It is saved to the <strong>Tahi Eval Hub</strong> sheet (CaseResults).</p><div class="human-verdict-status" data-human-verdict-status></div><form class="human-verdict-form" data-human-verdict-form><label class="human-verdict-field"><span>Verdict</span><select name="verdict" required><option value="">Select verdict…</option><option value="pass">Pass</option>
+<option value="fail">Fail</option>
+<option value="inconclusive">Inconclusive</option>
+<option value="borderline">Borderline</option></select></label><label class="human-verdict-field"><span>Notes</span><textarea name="notes" rows="4" placeholder="Rationale, follow-up tests, or expert context"></textarea></label><button type="submit" class="llm-assessment-toggle" data-human-verdict-submit>Submit verdict</button></form></section></div><div class="case-details-panel" data-case-details-panel="workflow-timing" data-hub-admin-only hidden><section class="workflow-timing-card" data-workflow-timing-card><p class="workflow-timing-total">Total 57.7s</p><table class="workflow-timing-table"><thead><tr><th>Stage</th><th>This run</th><th>Prior run</th><th>Delta</th></tr></thead><tbody><tr><td><span class="workflow-timing-stage">Classification</span><span class="workflow-timing-detail">Category D · Answerable queries</span></td><td>3.8s</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Summarise question</span><span class="workflow-timing-detail">Skipped (used prompt as-is)</span></td><td>—</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Search</span><span class="workflow-timing-detail">Includes pre-search prep<br>4 queries<ul class="workflow-timing-queries"><li>Search for mosque attacks investigation</li><li>Search for Royal Commission inquiry</li><li>Search for gunman prosecution outcome</li><li>Search for Christchurch mosque attacks history</li></ul></span></td><td>18.5s</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Evaluate results</span></td><td>15.0s</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">TTFT</span><span class="workflow-timing-detail">Chat POST → first token</span></td><td>39.2s</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Answer prefill</span><span class="workflow-timing-detail">Evaluation done → first token</span></td><td>994ms</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Generate answer</span><span class="workflow-timing-detail">First token → stream end</span></td><td>18.5s</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Overhead / other</span></td><td>847ms</td><td>—</td><td>—</td></tr><tr><td><span class="workflow-timing-stage">Total</span></td><td>57.7s</td><td>—</td><td>—</td></tr></tbody></table><p class="workflow-timing-footnote">Timings are derived from Caitlyn workflow traces and wall-clock duration. Generate answer includes response streaming after knowledge-base evaluation.</p></section></div></aside></div>
+<p><em>Rubric: Tahi_Test_Suite-2 · Tahi Test Suite (2).xlsx · PRD (https://tahi.nz)</em></p>
+    </main>
+    <footer class="footer">
+      Generated by tahi-test-runner. Open in a browser and use Print → Save as PDF to share.
+    </footer>
+  </div>
+  <script>
+(function () {
+  var DETAILS_TITLES = {
+    machine: "Machine review (Tier 2)",
+    human: "Human review (Tier 3)",
+    tier0: "Structural checks (Tier 0)",
+    tier1: "Rule-based checks (Tier 1)",
+    tier2: "Human review (Tier 3)",
+    "workflow-timing": "Workflow timing",
+  };
+
+  function openDetailsPanel(target) {
+    var layout = document.querySelector("[data-case-layout]");
+    var placeholder = document.querySelector("[data-case-details-placeholder]");
+    var title = document.querySelector("[data-case-details-title]");
+    if (!layout || !target) {
+      return;
+    }
+    layout.classList.add("is-details-open");
+    document.querySelectorAll("[data-case-details-panel]").forEach(function (panel) {
+      panel.hidden = panel.getAttribute("data-case-details-panel") !== target;
+    });
+    if (placeholder) {
+      placeholder.hidden = true;
+    }
+    if (title) {
+      title.textContent = DETAILS_TITLES[target] || "Review";
+    }
+    document.querySelectorAll("[data-tier-nav-card]").forEach(function (card) {
+      var active = card.getAttribute("data-details-target") === target;
+      card.classList.toggle("is-active", active);
+      card.setAttribute("aria-expanded", active ? "true" : "false");
+    });
+    if (target === "machine" && window.tahiLoadMachineDraft) {
+      window.tahiLoadMachineDraft();
+    }
+    if (target === "human" && window.tahiSyncVerdictPanel) {
+      window.tahiSyncVerdictPanel();
+    }
+  }
+
+  function closeDetailsPanel() {
+    var layout = document.querySelector("[data-case-layout]");
+    var placeholder = document.querySelector("[data-case-details-placeholder]");
+    if (!layout) {
+      return;
+    }
+    layout.classList.remove("is-details-open");
+    document.querySelectorAll("[data-case-details-panel]").forEach(function (panel) {
+      panel.hidden = true;
+    });
+    if (placeholder) {
+      placeholder.hidden = false;
+    }
+    document.querySelectorAll("[data-tier-nav-card]").forEach(function (card) {
+      card.classList.remove("is-active");
+      card.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  window.tahiOpenDetailsPanel = openDetailsPanel;
+  window.tahiCloseDetailsPanel = closeDetailsPanel;
+
+  document.querySelectorAll("[data-tier-nav-card]").forEach(function (card) {
+    card.addEventListener("click", function () {
+      var target = card.getAttribute("data-details-target");
+      if (!target) {
+        return;
+      }
+      var layout = document.querySelector("[data-case-layout]");
+      var isActive = card.classList.contains("is-active");
+      if (isActive && layout && layout.classList.contains("is-details-open")) {
+        closeDetailsPanel();
+        return;
+      }
+      openDetailsPanel(target);
+    });
+  });
+  document.querySelectorAll("[data-case-details-close]").forEach(function (btn) {
+    btn.addEventListener("click", closeDetailsPanel);
+  });
+
+  document.querySelectorAll("[data-llm-dialog-open]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-llm-dialog-open");
+      var dialog = id ? document.getElementById(id) : null;
+      if (dialog && typeof dialog.showModal === "function") {
+        dialog.showModal();
+      }
+    });
+  });
+  document.querySelectorAll("[data-llm-dialog-close]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var dialog = btn.closest("dialog");
+      if (dialog) {
+        dialog.close();
+      }
+    });
+  });
+})();
+</script>
+  
+</body>
+</html>
